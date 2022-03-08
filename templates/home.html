@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title> Leo Stock Exchange (LSE) </title>
+    </head>
+    <body>
+        <!-- center everything -->
+        <div class="main" align="middle">
+
+        <h1> Welcome to Leo Stock Exchange (LSE) </h1>
+        </br> 
+        </br>   
+        <table style="width:100%">
+            <tr>
+                {%for product in products %}
+                    <td> 
+                        <div class="sub_main" align="middle">
+                        <h3> {{product["name"]}} </h3> </br>
+                        <img src="/static/photos/{{product["name"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
+                        <h3> ${{product["price"]}} </h3>
+                        </div>
+                    </td>
+                {%endfor%}
+            <tr>
+        </table>
+        
+        <script type="text/javascript">
+            for(i=0; i < 10 ; i++) {
+                document.write("<p>Names: {{products[i]["name"]}}</br>");
+            }
+        </script>
+        
+    </div>
+    </body>
+</html>
