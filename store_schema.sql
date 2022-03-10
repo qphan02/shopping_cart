@@ -29,12 +29,12 @@ CREATE TABLE category(
 
 DROP TABLE IF EXISTS product;
 CREATE TABLE product(
-    id              INT(5)         NOT NULL,
-    name            VARCHAR(50)     NOT NULL,
+    ticket          VARCHAR(5)     NOT NULL,
+    name            VARCHAR(20)    NOT NULL,
     price           DECIMAL(6,2),
-    stock           INT(10),
+    stock           INT(10)        NOT NULL,
     category        VARCHAR(50)     NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (ticket),
     FOREIGN KEY (category) references category(name)
 );
 
@@ -52,13 +52,6 @@ CREATE TABLE orderitem(
 
 PRAGMA foreign_keys = on;
 
--- -- users
--- INSERT INTO users VALUES ('ebaron', 'pass', 'TA', 'Ethan Baron');
--- INSERT INTO users VALUES ('acoleman', 'pass', 'TA', 'Alex Coleman');
--- INSERT INTO users VALUES ('jjacobs', 'pass', 'TA', 'Jett Jacobs');
--- INSERT INTO users VALUES ('timwood', 'pass', 'Professor', 'Tim Wood');
--- INSERT INTO users VALUES ('rstarr', 'pass', 'Student', 'Ringo Starr'); 
-
 -- users (email, name, password)
 INSERT INTO users VALUES ('phan@gwu.edu', 'phan', 'pass');
 INSERT INTO users VALUES ('test@gwu.edu', 'testuser', 'testpass');
@@ -74,18 +67,13 @@ INSERT INTO category VALUES ('semiconductor');
 INSERT INTO category VALUES ('industry');
 INSERT INTO category VALUES ('cryptocurreny');
 
--- product (id, name, price, stock, category)
-INSERT INTO product VALUES (01, 'AAPL', 159.30, 10, 'technology');
-INSERT INTO product VALUES (02, 'MSFT', 278.91, 20, 'technology');
-INSERT INTO product VALUES (03, 'AMZN', 187.47, 30, 'technology');
-INSERT INTO product VALUES (04, 'GOOG', 2529.29, 40, 'communication');
-INSERT INTO product VALUES (05, 'FB', 187.47, 50, 'communication');
-INSERT INTO product VALUES (06, 'NVDA', 213.52, 60, 'semiconductor');
-INSERT INTO product VALUES (07, 'TSLA', 804.58, 70, 'industry');
--- INSERT INTO product VALUES (08, 'BA', 169.17, 80, 'industry');
-INSERT INTO product VALUES (09, 'BTC', 38919.10, 90, 'cryptocurreny');
-
--- oders (customer_email, date, total, quantity)
-
--- orderitem (customer_email, date, product_id, quantity)
--- INSERT INTO orderitem VALUES ("phan@gwu.edu", '08/03/2022', 09, 3);
+-- product (ticket, name, price, stock, category)
+INSERT INTO product VALUES ('AAPL', 'Apple', 159.30, 10, 'technology');
+INSERT INTO product VALUES ('MSFT', 'Microsoft', 278.91, 20, 'technology');
+INSERT INTO product VALUES ('AMZN', 'Amazon', 187.47, 30, 'technology');
+INSERT INTO product VALUES ('GOOG', 'Alphabet', 2529.29, 40, 'communication');
+INSERT INTO product VALUES ('FB', 'Meta Platfrom', 187.47, 50, 'communication');
+INSERT INTO product VALUES ('NVDA', 'Nvidia', 213.52, 60, 'semiconductor');
+INSERT INTO product VALUES ('TSLA', 'Tesla', 804.58, 70, 'industry');
+-- INSERT INTO product VALUES ('BA', 'Boeing', 169.17, 80, 'industry');
+INSERT INTO product VALUES ('BTC', 'Bitcoin', 38919.10, 90, 'cryptocurreny');

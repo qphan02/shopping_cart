@@ -1,7 +1,8 @@
 <html>
    <head>
-      <title> Leo's Stock Exchange </title>
+      <title> Leo's Stock Exchange (LSE) </title>
       <link href="../static/styles.css" rel="stylesheet"type="text/css" />
+      <link rel="icon" type="image/x-icon" href="../static/icon.png">
    </head>
    <body>
 
@@ -16,7 +17,8 @@
             <i class="fa fa-bars"></i>
           </a>
         </div>
-        <h1> Leo's Stock Exchange </h1>
+        <!-- <h1> Leo's Stock Exchange (LSE) </h1> -->
+        <img src="../static/logo.png" alt="LSE logo", height="30%" weight="30%">
         </br>
         </br>
         <table style="width:100%">
@@ -25,12 +27,13 @@
               <td>
                 <div class="sub_main" align="middle">
                   <h3> {{product["name"]}} </h3> </br>
-                  <img src="../static/photos/{{product["name"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
+                  <img src="../static/photos/{{product["ticket"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
                   <h3> ${{product["price"]}} </h3>
 
-                  <form action="/ticket/{{product["name"]}}" method="POST">
-                    <button type="submit" class="buy_button" value="BUY">BUY</button>
-                    <button type="submit" class="sell_button" value="SELL">SELL</button>
+                  <form action="/ticket/{{product["ticket"]}}" method="POST">
+                    <!-- <button type="submit" class="buy_button" value="BUY">BUY</button> -->
+                    <!-- <button type="submit" class="sell_button" value="SELL">SELL</button> -->
+                    <button type="submit" class="trade_button" value="TRADE">TRADE {{product["ticket"]}}</button>
                   </form>
                 </div>
               </td>

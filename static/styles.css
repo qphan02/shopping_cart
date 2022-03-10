@@ -1,5 +1,6 @@
 body {
-    background-color: #FEFCFF;
+    /* background-color: #FEFCFF; */
+    background-color: #ffffff;
 }
 
 p {
@@ -9,7 +10,7 @@ p {
 h1{
     text-transform: uppercase;
     text-align: center;
-    float: center;
+    /* float: center; */
     background-image: linear-gradient(
         -225deg,
         green 0%,
@@ -29,7 +30,7 @@ h1{
     font-size: 30px;
 }
 
-.buy_button , .sell_button{
+.buy_button , .sell_button, .trade_button{
     border: none;
     color: white;
     padding: 15px 32px;
@@ -46,12 +47,16 @@ h1{
 }
 
 .sell_button {
-    background-color: #f44336; /* Green */
+    background-color: #f44336; /* red */
+}
+
+.trade_button {
+    background-color: #115097; /* Green */
 }
 
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #008364;
+    background-color: #115097;
     overflow: hidden;
 }
   
@@ -100,12 +105,12 @@ h1{
 
 .login-form__logo-container {
     padding: 30px;
-    background: rgba(0, 0, 0, 0.25);
+    background: #115097;
 }
 
 .login-form__logo {
     display: block;
-    max-width: 125px;
+    max-width: 300px;
     margin: 0 auto;
 }
 
@@ -132,18 +137,18 @@ h1{
 }
 
 .login-form__input:focus {
-    border-color: #009578;
+    border-color: #115097;
 }
 
 .login-form__input::placeholder {
-    color: #aaaaaa;
+    color: #115097;
 }
 
 .login-form__button {
     padding: 10px;
     color: #ffffff;
     font-weight: bold;
-    background: #009578;
+    background: #115097;
     width: 100%;
     border: none;
     outline: none;
@@ -152,7 +157,7 @@ h1{
 }
 
 .login-form__button:active {
-    background: #008067;
+    background: #115097;
 }
 
 .login-form__links {
@@ -162,7 +167,7 @@ h1{
 
 .login-form__link {
     font-size: 0.9em;
-    color: #008067;
+    color: #115097;
     text-decoration: none;
 }
 

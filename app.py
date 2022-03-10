@@ -31,7 +31,13 @@ def home():
     
 @app.route('/ticket/<ticket>', methods=['GET', 'POST'])
 def product(ticket):
-    return ticket;
+    connection = sqlite3.connect(db_fname);
+    connection.row_factory = sqlite3.Row;
+    cursor = connection.cursor();
+    query = cursor.execute("SELECT * FROM product WHERE ticket = (?)",(ticket,))
+    ticket_data = query.fetchall()
+    connection.close()
+    return render_template("product.html",product = ticket_data[0]);
 
 @app.route('/tab/<tab>', methods=['GET', 'POST'])
 def nav(tab):
