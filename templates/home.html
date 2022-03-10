@@ -1,34 +1,42 @@
 <html>
-    <head>
-        <title> Leo Stock Exchange (LSE) </title>
-    </head>
-    <body>
-        <!-- center everything -->
-        <div class="main" align="middle">
+   <head>
+      <title> Leo's Stock Exchange </title>
+      <link href="../static/styles.css" rel="stylesheet"type="text/css" />
+   </head>
+   <body>
 
-        <h1> Welcome to Leo Stock Exchange (LSE) </h1>
-        </br> 
-        </br>   
+      <!-- center everything -->
+      <div class="main" align="middle">
+        
+        <div class="topnav" id="myTopnav">
+          <a href="/tab/home" class="active">Home</a>
+          <a href="/tab/login">Login</a>
+          <a href="/tab/about">About</a>
+          <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+          </a>
+        </div>
+        <h1> Leo's Stock Exchange </h1>
+        </br>
+        </br>
         <table style="width:100%">
-            <tr>
-                {%for product in products %}
-                    <td> 
-                        <div class="sub_main" align="middle">
-                        <h3> {{product["name"]}} </h3> </br>
-                        <img src="/static/photos/{{product["name"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
-                        <h3> ${{product["price"]}} </h3>
-                        </div>
-                    </td>
-                {%endfor%}
-            <tr>
+          <tr>
+            {%for product in products %}
+              <td>
+                <div class="sub_main" align="middle">
+                  <h3> {{product["name"]}} </h3> </br>
+                  <img src="../static/photos/{{product["name"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
+                  <h3> ${{product["price"]}} </h3>
+
+                  <form action="/ticket/{{product["name"]}}" method="POST">
+                    <button type="submit" class="buy_button" value="BUY">BUY</button>
+                    <button type="submit" class="sell_button" value="SELL">SELL</button>
+                  </form>
+                </div>
+              </td>
+            {%endfor%}
+          <tr>
         </table>
-        
-        <script type="text/javascript">
-            for(i=0; i < 10 ; i++) {
-                document.write("<p>Names: {{products[i]["name"]}}</br>");
-            }
-        </script>
-        
-    </div>
-    </body>
+      </div>
+   </body>
 </html>

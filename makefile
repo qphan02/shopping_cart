@@ -1,4 +1,4 @@
-DB = cart
+DB = store
 
 run:
 	@python3 -m flask run
@@ -7,7 +7,7 @@ web:
 	@open http://127.0.0.1:5000/
 
 build:
-	@sqlite3 ${DB}.db ".read create_cart.sql"
+	@sqlite3 ${DB}.db ".read store_schema.sql"
 
 clean:
 	@rm ${DB}.db

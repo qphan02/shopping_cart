@@ -1,0 +1,9 @@
+body {
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;   
+  background-image: url("ben01.png");
+}
+select {
+  width: 400
+}

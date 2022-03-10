@@ -1,0 +1,86 @@
+<html>
+  <!-- https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css -->
+  <head>
+    <title>Welcome to the $HOP!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1/dist/minty/bootstrap.min.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="../static/style.css" rel="stylesheet" type="text/css"/>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Welcome, {{session['key'][1]}}!</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/catalog">Catalog
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>    
+      <form action="/query" method="post" class="d-flex">
+        <input class="form-control me-sm-2" name="query" id="query" type="text" placeholder="Lookup" required>
+        <li class="nav-item">
+          <a class="nav-link" href="#">by</a>
+        </li>
+        <li class="nav-item">
+          <select class="form-select" style="width:auto;height:auto"  
+        id="filter" name="filter">
+        <option>Name</option>
+        <option>Category</option>
+      </select>
+        </li>
+        <li class="nav-item">
+        <button class="btn btn-primary" type="submit">Search</button>
+        </li>
+
+        
+      </form>
+        <li class="nav-item">
+          <a class="nav-link active" href="/orders">My orders</a>
+        </li>  
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>  
+      </ul>
+    </div>
+  </div>
+</nav>
+  </head>
+  <body>
+
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>{{err}}</strong>
+</div> -->
+<br>
+<br>
+<br>
+<br>
+        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="my-0 fw-normal">Orders</h4>
+          </div>
+          <div class="card-body">
+                <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Total Price</th>
+      <th scope="col">Items:</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for x in range(i): %}
+    <tr class="table-active">
+      <th scope="row">{{orders[x][1]}}</th>
+      <td>${{orders[x][2]}}.00</td>
+      <td>{{lines[x]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+          </div>
+        </div>
+  </body>
+</html>
