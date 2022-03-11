@@ -16,17 +16,19 @@
         </div>
     <br>
     <br>
-        <form class="login-form" action="/" method="POST">
+        <form class="login-form" action="/login" method="POST">
             <div class="login-form__logo-container" align ="center">
                 <img class="login-form__logo" src="../static/logo.png" alt="Logo">
             </div>
             <div class="login-form__content">
                 <div class="login-form__header">Login to your account</div>
-                <input class="login-form__input" type="text" name="dc_username" placeholder="Username">
-                <input class="login-form__input" type="password" name="dc_username" placeholder="Password">
+                <p style="color:red; font-size:12px;">{{err}}</p>
+                <input class="login-form__input" type="text" name="uname" placeholder="Username">
+                <input class="login-form__input" type="password" name="pass" placeholder="Password">
                 <button class="login-form__button" type="submit">Login</button>
                 <div class="login-form__links">
-                    <a class="login-form__link" href="/">Forgot your password?</a>
+                    <a class="login-form__link" href="/">Forgot your password?</a> <br>
+                    <a class="login-form__link" href="/new_account">Create account</a>
                 </div>
             </div>
         </form>

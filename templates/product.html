@@ -2,6 +2,15 @@
     <head>
         <title> LSE: {{product['name']}}  </title>
         <link href="../static/styles.css" rel="stylesheet"type="text/css" />
+
+        <style>
+            .div_product {
+              border: 5px outset #115097;
+              background-color: whitesmoke;
+              width: 50%;  
+              text-align: center;
+            }
+        </style>
     </head>
     <body>
         <div class="topnav" id="myTopnav">
@@ -17,9 +26,20 @@
     <br>
         <!-- center everything -->
         <!-- <h1> Leo's Stock Exchange </h1> -->
-        <div class="main" align="middle">
-            <img src="../static/photos/{{product['ticket']}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
-
+        <div align = "middle">
+            <div class="div_product">
+                <br>
+                <img src="../static/photos/{{product['ticket']}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
+                <h2>{{product["name"]}}</h2>
+                <h4>Ticket: {{product["ticket"]}}</h4>
+                <h4>Sector: {{product["category"]}}</h4>
+                <h4>Price: ${{product["price"]}}</h4>
+                <h4>Available to trade: {{product["stock"]}} shares</h4>
+                <form action="/ticket/{{product["ticket"]}}" method="POST">
+                    <button type="submit" class="buy_button" value="BUY" width = "90%">BUY</button>
+                    <button type="submit" class="sell_button" value="SELL" width = "90%">SELL</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>

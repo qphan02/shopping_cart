@@ -2,17 +2,20 @@ import sqlite3
 from flask import Flask, session, render_template, redirect, url_for, request
 
 app = Flask('app')
-app.secret_key = "password123"
+app.secret_key = "leo-phan"
 
 db_fname = "store.db"
 home_fname = "home.html"
 login_fname = "login.html"
+about_fname = "about.html"
 product_fname = "product.html"
 
-
-
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def home(search_list = None):
+
+    if(search_list != None):
+        return render_template(home_fname,products = search_list)
+
     # connect to the database
     connection = sqlite3.connect(db_fname);
     connection.row_factory = sqlite3.Row;
@@ -34,10 +37,10 @@ def product(ticket):
     connection = sqlite3.connect(db_fname);
     connection.row_factory = sqlite3.Row;
     cursor = connection.cursor();
-    query = cursor.execute("SELECT * FROM product WHERE ticket = (?)",(ticket,))
+    query = cursor.execute("SELECT * FROM product WHERE ticket = (?);",(ticket,))
     ticket_data = query.fetchall()
     connection.close()
-    return render_template("product.html",product = ticket_data[0]);
+    return render_template(product_fname,product = ticket_data[0]);
 
 @app.route('/tab/<tab>', methods=['GET', 'POST'])
 def nav(tab):
@@ -52,7 +55,24 @@ def nav(tab):
 
 @app.route('/about', methods=['GET', 'POST'])
 def about():
-    return render_template("about.html")
+    return render_template(about_fname)
+
+@app.route('/home')
+def goto_home():
+    return redirect('/')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        connection = sqlite3.connect(db_fname);
+        connection.row_factory = sqlite3.Row;
+        cursor = connection.cursor();
+        search_criterias= ('%' + request.form["search"] + '%',)*3
+        cursor.execute("SELECT * FROM product WHERE LOWER(ticket) LIKE ? OR LOWER(category) LIKE ? OR LOWER(name) LIKE ?;",search_criterias)
+        query = cursor.fetchall()
+        connection.close()
+        return home(query)
+    return home()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,7 +85,7 @@ def login():
     password = request.form["pass"]
     print(uname, password)
     # get password correspond to the username
-    data = cursor.execute("SELECT username, password, type_user,name FROM users WHERE username=? AND password=?",(uname,password));
+    data = cursor.execute("SELECT * FROM users WHERE name=? AND password=?;",(uname,password));
     key = data.fetchone();
     #print(key)
 
@@ -77,9 +97,9 @@ def login():
       session['type'] = [key[2],key[3]];
       print("Login granted")
 
-      return redirect('/home')
+      return redirect('/')
     else:
-      return render_template("login.html", err="Invalid login!")
+      return render_template("login.html", err="Incorrect username or password! Please try again!")
       # exit(0);
   elif request.method == 'GET':
     if 'type' in session:
