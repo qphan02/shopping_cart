@@ -9,7 +9,7 @@
               background-color: whitesmoke;
               width: 50%;  
               height: 70%;
-              text-align: center;
+              text-align: left;
             }
         </style>
     </head>
@@ -18,8 +18,10 @@
             <a href="/tab/home" >Home</a>
             <a href="/tab/about">About</a>
             {%if user == None%} <a href="/tab/login">Login</a> {% endif %}
-            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> {%endif%}
-            <a href="/checkout" class="active">Checkout</a>
+            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
+            <a href="/tab/history">Order History</a>
+            {%endif%}
+            <a href="/" class="active">Confirmation</a>
             <div align="right" height = "100%" padding-left="20%">
               <form action="/search" method="POST">
                 <input type="submit" value = "Search">
@@ -31,30 +33,18 @@
         <br>
         <div align = "middle">
             <div class="div_checkout">
-                <h2>Checkout</h2>
+                <h2>Congrats! Your order has been processed successfully!</h2>
+                <h3> Your current account balance is: ${{user['balance']}}</h3>
+                <h4> Your current holdings: </h4>
                 <ul>
-                    {% for item in cart%}
-                        <li>
-                            {{item[3]}}  {{item[1]}}  shares  of  {{item[0]}}  at  ${{item[2]}}  per  share
-                        </li>
-                        <br>
+                    {%for holding in holdings%}
+                        <li> {{holding[0]}} : {{holding[1]}} shares</li>
                     {%endfor%}
                 </ul>
-                {%if totalcost > 0 %}
-                    <h2>Net debit of this order: ${{totalcost}}</h2>
-                {%endif%}
-                {%if totalcost < 0 %}
-                    <h2>Net credit of this order: ${{totalcost}}</h2>
-                {%endif%}
-                {%if error != None%}
-                    <p style="color:red;">{{error}}</p>
-                {%endif%}
-                <div align="center">
-                    <form action="/submit" method="POST">
-                        <input type="submit" value = "Submit Order" size="80">
-                    </form>
-                </div> 
             </div>
+            <br>
+            <a href="/"> Back to homepage </a>
         </div>
+        
     </body>
 </html>

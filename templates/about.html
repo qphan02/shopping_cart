@@ -6,13 +6,19 @@
     </head>
     <body>
         <div class="topnav" id="myTopnav">
-            <a href="/tab/home">Home</a>
-            <a href="/tab/login">Login</a>
+            <a href="/tab/home" >Home</a>
             <a href="/tab/about" class="active">About</a>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-              <i class="fa fa-bars"></i>
-            </a>
-        </div>
+            {%if user == None%} <a href="/tab/login">Login</a> {% endif %}
+            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
+            <a href="/tab/history">Order History</a>
+            {%endif%}
+            <div align="right" height = "100%" padding-left="20%">
+              <form action="/search" method="POST">
+                <input type="submit" value = "Search">
+                <input type="search" id = "search" name = "search" placeholder="Search name or category" autofocus>
+              </form>
+            </div>
+          </div>
         <br>
         <div class="main" align="middle">
             <p> George Washington University</p>

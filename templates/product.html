@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title> LSE: {{product['name']}}  </title>
+        <title> {{product['name']}}  </title>
         <link href="../static/styles.css" rel="stylesheet"type="text/css" />
 
         <style>
@@ -8,15 +8,25 @@
               border: 5px outset #115097;
               background-color: whitesmoke;
               width: 50%;  
+              height: 82%;
               text-align: center;
             }
+            .div_cart {
+                border: 5px outset #115097;
+                background-color: whitesmoke;
+                width: 50%;  
+                text-align: left;
+              }
         </style>
     </head>
     <body>
         <div class="topnav" id="myTopnav">
             <a href="/tab/home">Home</a>
-            <a href="/tab/login">Login</a>
             <a href="/tab/about">About</a>
+            {%if user == None%} <a href="/tab/login">Login</a> {% endif %}
+            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
+            <a href="/tab/history">Order History</a>
+            {%endif%}
             <a href="/product/{{product['ticket']}}" class="active">{{product['name']}}</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
               <i class="fa fa-bars"></i>
@@ -31,15 +41,64 @@
                 <br>
                 <img src="../static/photos/{{product['ticket']}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
                 <h2>{{product["name"]}}</h2>
+                <font face="Roboto" size="1px" color="#115097">{{product["descryption"]}}</font>
                 <h4>Ticket: {{product["ticket"]}}</h4>
                 <h4>Sector: {{product["category"]}}</h4>
                 <h4>Price: ${{product["price"]}}</h4>
                 <h4>Available to trade: {{product["stock"]}} shares</h4>
-                <form action="/ticket/{{product["ticket"]}}" method="POST">
-                    <button type="submit" class="buy_button" value="BUY" width = "90%">BUY</button>
-                    <button type="submit" class="sell_button" value="SELL" width = "90%">SELL</button>
-                </form>
+                {%if user != None%}
+                    <br>
+                        <form action="/trade/{{product["ticket"]}}" method="POST">
+                            <input hidden type="textbox" id="trade" value = "" name = "trade">
+                            <p> Input quanity: <input type="number" id = "quantity" name = "quantity" min="1" max="{{product["stock"]}}" size = "40" value="100" autofocus>  shares</p>
+                                <button type="submit" class="buy_button" value="BUY" width = "90%" onclick="buy_func()">BUY</button>
+                                <button type="submit" class="sell_button" value="SELL" width = "90%" onclick="sell_func()">SELL</button>
+                        </form>
+
+                        <script>
+                            function buy_func() {
+                                document.getElementById("trade").value = "BUY";
+                            }
+                            function sell_func() {
+                                document.getElementById("trade").value = "SELL";
+                            }
+                        </script>
+                {%endif%}
+                {%if user == None%}
+                    <p style="color:red;"> You need to login to make the transaction !</p>
+                    <p> Input quanity: <input type="number" id = "quantity" name = "quantity" min="1" max="{{product["stock"]}}" size = "40" disabled>  shares</p>
+                    <button type="submit" class="buy_button" value="BUY" width = "90%" disabled>BUY</button>
+                    <button type="submit" class="sell_button" value="SELL" width = "90%" disabled>SELL</button>
+                {%endif%}
             </div>
+            <br>
+            {%if cart != None%}
+                <div class="div_cart">
+                    <div align="center">
+                        <h2>Your Cart</h2>
+                    </div>
+                    <ul>
+                        {% for item in cart%}
+                            <li>
+                                <form action="/cancel/{{item[0]}}-{{item[1]}}-{{item[2]}}-{{item[3]}}-{{product['ticket']}}" method="Post">
+                                    {{item[3]}}  {{item[1]}}  shares  of  {{item[0]}}  at  ${{item[2]}}  per  share  <input type="submit" value = "Cancel this item">
+                                </form>
+                            </li>
+                            <br>
+                        {%endfor%}
+                    </ul>
+                    <div align="center">
+                        <form action="/delcart/{{product['ticket']}}" method="POST">
+                            <input type="submit" value = "Remove all items" size="80">
+                        </form>
+                        <form action="/checkout" method="POST">
+                            <input type="submit" value = "Checkout" size="80">
+                        </form>
+                    </div>
+                </div>
+            {%endif%}
+            <!-- <br> -->
+            <a href="/"> Back to homepage </a>
         </div>
     </body>
 </html>

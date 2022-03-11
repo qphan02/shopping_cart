@@ -9,7 +9,7 @@
             <a href="/tab/home" class="active">Home</a>
             <a href="/tab/about">About</a>
             {%if user == None%} <a href="/tab/login">Login</a> {% endif %}
-            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
+            {%if user != None%} <a href="/tab/login">Welcome, {{user['name']}}!  Account Balance: ${{user['balance']}}</a> 
             <a href="/tab/history">Order History</a>
             {%endif%}
             <div align="right" height = "100%" padding-left="20%">
@@ -21,19 +21,19 @@
         </div>
     <br>
     <br>
-        <form class="login-form" action="/login" method="POST">
+        <form class="login-form" action="/new_account" method="POST">
             <div class="login-form__logo-container" align ="center">
                 <img class="login-form__logo" src="../static/logo.png" alt="Logo">
             </div>
             <div class="login-form__content">
-                <div class="login-form__header">Login to your account</div>
+                <div class="login-form__header">Create a new account</div>
                 <p style="color:red; font-size:12px;">{{err}}</p>
+                <input class="login-form__input" type="text" name="email" placeholder="Email" autofocus/>
                 <input class="login-form__input" type="text" name="uname" placeholder="Username" autofocus/>
                 <input class="login-form__input" type="password" name="pass" placeholder="Password">
-                <button class="login-form__button" type="submit">Login</button>
+                <button class="login-form__button" type="submit">Create</button>
                 <div class="login-form__links">
-                    <a class="login-form__link" href="/">Forgot your password?</a> <br>
-                    <a class="login-form__link" href="/new_account">Create account</a>
+                    <a class="login-form__link" href="/login">Already have an account? Log in now</a> <br>
                 </div>
             </div>
         </form>

@@ -11,8 +11,11 @@
         
         <div class="topnav" id="myTopnav">
           <a href="/tab/home" class="active">Home</a>
-          <a href="/tab/login">Login</a>
           <a href="/tab/about">About</a>
+          {%if user == None%} <a href="/tab/login">Login</a> {% endif %}
+          {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
+          <a href="/tab/history">Order History</a>
+          {%endif%}
           <div align="right" height = "100%" padding-left="20%">
             <form action="/search" method="POST">
               <input type="submit" value = "Search">
@@ -26,20 +29,24 @@
         </br>
         <table style="width:100%">
           <tr>
-            {%for product in products %}
-              <td>
-                <div class="sub_main" align="middle">
-                  <h3> {{product["name"]}} </h3> </br>
-                  <img src="../static/photos/{{product["ticket"]}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
-                  <h3> ${{product["price"]}} </h3>
+            {%for i in range(0, products|length, 6) %}
+              <tr>
+              {%for j in range(i, i+6, 1) %}
+                <td>
+                  <div class="sub_main" align="middle">
+                    {%if j < products|length%}
+                    <h3> {{products[j]["name"]}} </h3> </br>
+                    <img src="../static/photos/{{products[j]["ticket"]}}.png" alt="{{products[j]["name"]}}" width="100" height="100"> </br>
+                    <h3> ${{products[j]["price"]}} </h3>
 
-                  <form action="/ticket/{{product["ticket"]}}" method="POST">
-                    <!-- <button type="submit" class="buy_button" value="BUY">BUY</button> -->
-                    <!-- <button type="submit" class="sell_button" value="SELL">SELL</button> -->
-                    <button type="submit" class="trade_button" value="TRADE">TRADE {{product["ticket"]}}</button>
-                  </form>
-                </div>
-              </td>
+                    <form action="/ticket/{{products[j]["ticket"]}}" method="POST">
+                      <button type="submit" class="trade_button" value="TRADE">TRADE {{products[j]["ticket"]}}</button>
+                    </form>
+                    {%endif%}
+                  </div>
+                </td>
+              {%endfor%}
+              </tr>
             {%endfor%}
           <tr>
         </table>
