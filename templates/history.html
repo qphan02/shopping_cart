@@ -42,7 +42,7 @@
                 </form>
                 <ul>
                     {%for tran in transactions%}
-                        <li> On {{tran['date']}}, you {%if tran['quantity'] > 0%}bought{%endif%}{%if tran['quantity'] < 0%}sold{%endif%} {{tran['quantity']}} shares of {{tran['ticket_id']}}</li>
+                        <li> On {{tran['date']}}, you {%if tran['quantity'] > 0%}bought{%endif%}{%if tran['quantity'] < 0%}sold{%endif%} {{tran['quantity']}} shares of {{tran['ticker_id']}}</li>
                     {%endfor%}
                 </ul>
                 

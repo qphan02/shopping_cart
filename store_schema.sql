@@ -29,37 +29,37 @@ CREATE TABLE category(
 
 DROP TABLE IF EXISTS product;
 CREATE TABLE product(
-    ticket          VARCHAR(5)     NOT NULL,
+    ticker          VARCHAR(5)     NOT NULL,
     name            VARCHAR(20)    NOT NULL,
     price           DECIMAL(6,2),
     stock           INT(10)        NOT NULL,
     category        VARCHAR(50)     NOT NULL,
     descryption     VARCHAR(1000),
-    PRIMARY KEY (ticket),
+    PRIMARY KEY (ticker),
     FOREIGN KEY (category) references category(name)
 );
 
 DROP TABLE IF EXISTS holdings;
 CREATE TABLE holdings (
     customer_email  VARCHAR(100)    NOT NULL,
-    ticket          VARCHAR(5)      NOT NULL,
+    ticker          VARCHAR(5)      NOT NULL,
     quantity        INT(50)         NOT NULL,
     -- balance         DECIMAL(8,2)    NOT NULL,
-    PRIMARY KEY (customer_email, ticket),
+    PRIMARY KEY (customer_email, ticker),
     FOREIGN KEY (customer_email) references users(email),
-    FOREIGN KEY (ticket) references product(ticket)
+    FOREIGN KEY (ticker) references product(ticker)
 );
 
 DROP TABLE IF EXISTS orderitem;
 CREATE TABLE orderitem(
     customer_email  VARCHAR(100),
     date            VARCHAR(100),
-    ticket_id       VARCHAR(5),
+    ticker_id       VARCHAR(5),
     quantity        INT(10),
     FOREIGN KEY (customer_email) references orders(customer_email),
     FOREIGN KEY (date) references orders(date),
-    FOREIGN KEY (ticket_id) references product(ticket)
-    -- PRIMARY KEY (customer_email, date, ticket_id)
+    FOREIGN KEY (ticker_id) references product(ticker)
+    -- PRIMARY KEY (customer_email, date, ticker_id)
 );
 
 PRAGMA foreign_keys = on;
@@ -81,7 +81,7 @@ INSERT INTO category VALUES ('cryptocurreny');
 INSERT INTO category VALUES ('entertainment');
 INSERT INTO category VALUES ('airline');
 
--- product (ticket, name, price, stock, category)
+-- product (ticker, name, price, stock, category)
 INSERT INTO product VALUES ('AAPL', 'Apple', 159.30, 1000, 'technology',"Apple Inc. designs, manufactures and markets smartphones, personal computers, tablets, wearables and accessories, and sells a variety of related services. The Company's products include iPhone, Mac, iPad, and Wearables, Home and Accessories. iPhone is the Company's line of smartphones based on its iOS operating system. Mac is the Company's line of personal computers based on its macOS operating system. iPad is the Company's line of multi-purpose tablets based on its iPadOS operating system. Wearables, Home and Accessories includes AirPods, Apple TV, Apple Watch, Beats products, HomePod, iPod touch and other Apple-branded and third-party accessories. AirPods are the Company's wireless headphones that interact with Siri. Apple Watch is the Company's line of smart watches. Its services include Advertising, AppleCare, Cloud Services, Digital Content and Payment Services. Its customers are primarily in the consumer, small and mid-sized business, education, enterprise and government markets.");
 INSERT INTO product VALUES ('MSFT', 'Microsoft', 278.91, 1000, 'technology',"Microsoft Corporation is a technology company. The Company develops and supports a range of software products, services, devices, and solutions. The Company's segments include Productivity and Business Processes, Intelligent Cloud, and More Personal Computing. The Company's products include operating systems; cross-device productivity applications; server applications; business solution applications; desktop and server management tools; software development tools; and video games. It also designs, manufactures, and sells devices, including personal computers (PCs), tablets, gaming and entertainment consoles, other intelligent devices, and related accessories. It offers an array of services, including cloud-based solutions that provide customers with software, services, platforms, and content, and it provides solution support and consulting services. It markets and distributes its products and services through original equipment manufacturers, direct, and distributors and resellers.");
 INSERT INTO product VALUES ('AMZN', 'Amazon', 2936.35, 1000, 'technology',"Amazon.com, Inc. offers a range of products and services through its Websites. The Company's products include merchandise and content that it purchases for resale from vendors and those offered by third-party sellers. It also manufactures and sells electronic devices, including Kindle, Fire tablet, Fire TV, Echo, Ring, and other devices and it develops and produce media content. It operates through three segments: North America, International and Amazon Web Services (AWS). AWS offers a set of technology services, including compute, storage, database, analytics, machine learning, Internet of Things, cloud and serverless computing. In addition, it provides services, such as advertising to sellers, vendors, publishers, authors, and others, through programs such as sponsored ads, display, and video advertising. It also offers Amazon Prime, a membership program that includes free shipping, access to streaming of various movies and television (TV) episodes, including Amazon Original content.");

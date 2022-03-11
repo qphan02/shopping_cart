@@ -27,7 +27,7 @@
             {%if user != None%} <a href="/tab/login">Welcome, {{user['name']|title}}!  Account Balance: ${{user['balance']}}</a> 
             <a href="/tab/history">Order History</a>
             {%endif%}
-            <a href="/product/{{product['ticket']}}" class="active">{{product['name']}}</a>
+            <a href="/product/{{product['ticker']}}" class="active">{{product['name']}}</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
               <i class="fa fa-bars"></i>
             </a>
@@ -39,16 +39,16 @@
         <div align = "middle">
             <div class="div_product">
                 <br>
-                <img src="../static/photos/{{product['ticket']}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
+                <img src="../static/photos/{{product['ticker']}}.png" alt="{{product["name"]}}" width="100" height="100"> </br>
                 <h2>{{product["name"]}}</h2>
                 <font face="Roboto" size="1px" color="#115097">{{product["descryption"]}}</font>
-                <h4>Ticket: {{product["ticket"]}}</h4>
+                <h4>Ticker: {{product["ticker"]}}</h4>
                 <h4>Sector: {{product["category"]}}</h4>
                 <h4>Price: ${{product["price"]}}</h4>
                 <h4>Available to trade: {{product["stock"]}} shares</h4>
                 {%if user != None%}
                     <br>
-                        <form action="/trade/{{product["ticket"]}}" method="POST">
+                        <form action="/trade/{{product["ticker"]}}" method="POST">
                             <input hidden type="textbox" id="trade" value = "" name = "trade">
                             <p> Input quanity: <input type="number" id = "quantity" name = "quantity" min="1" max="{{product["stock"]}}" size = "40" value="100" autofocus>  shares</p>
                                 <button type="submit" class="buy_button" value="BUY" width = "90%" onclick="buy_func()">BUY</button>
@@ -80,7 +80,7 @@
                     <ul>
                         {% for item in cart%}
                             <li>
-                                <form action="/cancel/{{item[0]}}-{{item[1]}}-{{item[2]}}-{{item[3]}}-{{product['ticket']}}" method="Post">
+                                <form action="/cancel/{{item[0]}}-{{item[1]}}-{{item[2]}}-{{item[3]}}-{{product['ticker']}}" method="Post">
                                     {{item[3]}}  {{item[1]}}  shares  of  {{item[0]}}  at  ${{item[2]}}  per  share  <input type="submit" value = "Cancel this item">
                                 </form>
                             </li>
@@ -88,7 +88,7 @@
                         {%endfor%}
                     </ul>
                     <div align="center">
-                        <form action="/delcart/{{product['ticket']}}" method="POST">
+                        <form action="/delcart/{{product['ticker']}}" method="POST">
                             <input type="submit" value = "Remove all items" size="80">
                         </form>
                         <form action="/checkout" method="POST">

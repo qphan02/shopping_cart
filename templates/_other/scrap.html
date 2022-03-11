@@ -6,11 +6,11 @@
           <td>
             <div class="sub_main" align="middle">
               <h3> {{products[j]["name"]}} </h3> </br>
-              <img src="../static/photos/{{products[j]["ticket"]}}.png" alt="{{products[j]["name"]}}" width="100" height="100"> </br>
+              <img src="../static/photos/{{products[j]["ticker"]}}.png" alt="{{products[j]["name"]}}" width="100" height="100"> </br>
               <h3> ${{products[j]["price"]}} </h3>
 
-              <form action="/ticket/{{products[j]["ticket"]}}" method="POST">
-                <button type="submit" class="trade_button" value="TRADE">TRADE {{products[j]["ticket"]}}</button>
+              <form action="/ticker/{{products[j]["ticker"]}}" method="POST">
+                <button type="submit" class="trade_button" value="TRADE">TRADE {{products[j]["ticker"]}}</button>
               </form>
             </div>
           </td>

@@ -28,18 +28,18 @@ def home(search_list = None):
     cursor = connection.cursor();
     
     # retrieve database
-    data = cursor.execute("SELECT * FROM product ORDER BY ticket;")
+    data = cursor.execute("SELECT * FROM product ORDER BY ticker;")
     products = data.fetchall();
 
     # get signal from html forms
     if request.method == 'POST':
         print("POST!");
-        # ticket = request.form[]
+        # ticker = request.form[]
 
     return render_template(home_fname,products = products, user = user_data)
     
-@app.route('/ticket/<ticket>', methods=['GET', 'POST'])
-def product(ticket):
+@app.route('/ticker/<ticker>', methods=['GET', 'POST'])
+def product(ticker):
     user_data = None
     if 'user' in session:
         user_data = session['user']
@@ -52,10 +52,10 @@ def product(ticket):
     connection = sqlite3.connect(db_fname);
     connection.row_factory = sqlite3.Row;
     cursor = connection.cursor();
-    query = cursor.execute("SELECT * FROM product WHERE ticket = (?);",(ticket,))
-    ticket_data = query.fetchall()
+    query = cursor.execute("SELECT * FROM product WHERE ticker = (?);",(ticker,))
+    ticker_data = query.fetchall()
     connection.close()
-    return render_template(product_fname,product = ticket_data[0], user = user_data, cart = cart_data);
+    return render_template(product_fname,product = ticker_data[0], user = user_data, cart = cart_data);
 
 @app.route('/tab/<tab>', methods=['GET', 'POST'])
 def nav(tab):
@@ -90,7 +90,7 @@ def search():
         connection.row_factory = sqlite3.Row;
         cursor = connection.cursor();
         search_criterias= ('%' + request.form["search"].lower() + '%',)*3
-        cursor.execute("SELECT * FROM product WHERE LOWER(ticket) LIKE ? OR LOWER(category) LIKE ? OR LOWER(name) LIKE ? ORDER BY ticket;",search_criterias)
+        cursor.execute("SELECT * FROM product WHERE LOWER(ticker) LIKE ? OR LOWER(category) LIKE ? OR LOWER(name) LIKE ? ORDER BY ticker;",search_criterias)
         query = cursor.fetchall()
         connection.close()
         return home(query)
@@ -175,20 +175,20 @@ def new_account():
     elif request.method == 'GET':
         return render_template("adduser.html", user = user_data)
 
-@app.route('/trade/<ticket>', methods=['GET', 'POST'])
-def trade(ticket):
+@app.route('/trade/<ticker>', methods=['GET', 'POST'])
+def trade(ticker):
     if request.method == 'POST':
         qty = request.form['quantity']
         type = request.form['trade']
-        order_desc =  str(type +' ' + qty + ' shares of ' + ticket)
+        order_desc =  str(type +' ' + qty + ' shares of ' + ticker)
         
         connection = sqlite3.connect(db_fname)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
-        cursor.execute('SELECT price FROM product WHERE ticket = ?', (ticket,))
+        cursor.execute('SELECT price FROM product WHERE ticker = ?', (ticker,))
         price = cursor.fetchone()[0]
 
-        order = [ticket, str(qty), str(price), type];
+        order = [ticker, str(qty), str(price), type];
         
         if 'cart' not in session:
             orders = []
@@ -198,25 +198,25 @@ def trade(ticket):
             orders = session['cart']
             orders.append(order)
             session['cart'] = orders
-    str_redirect = str("/ticket/" + ticket)
+    str_redirect = str("/ticker/" + ticker)
     return redirect(str_redirect)
 
 @app.route('/cancel/<item>', methods=['GET', 'POST'])
 def cancel(item):
     item_list = list(item.split("-"))
-    last_ticket = item_list.pop(-1)
+    last_ticker = item_list.pop(-1)
     session['cart'].remove(item_list)
     print(session['cart'])
     if(len(session['cart']) == 0):
         session.pop('cart')
-    str_redirect = str("/ticket/" +last_ticket)
-    # return product(last_ticket)
+    str_redirect = str("/ticker/" +last_ticker)
+    # return product(last_ticker)
     return redirect(str_redirect);
 
 @app.route('/delcart/<ticker>', methods=['GET', 'POST'])
 def delcar(ticker):
     session.pop('cart')
-    str_redirect = str("/ticket/" +ticker)
+    str_redirect = str("/ticker/" +ticker)
     return redirect(str_redirect);
 
 @app.route('/checkout', methods=['GET', 'POST'])
@@ -277,19 +277,19 @@ def submit():
         qty    = int(item[1])
         if(item[3] == 'SELL'):
             qty = -qty
-        cursor.execute("SELECT stock FROM product WHERE ticket = ?",(ticker,))
+        cursor.execute("SELECT stock FROM product WHERE ticker = ?",(ticker,))
         qty_o = cursor.fetchone()[0]
         qty_n = int(qty_o) - int(qty)
-        cursor.execute("UPDATE product SET stock = ? WHERE ticket = ? ",(qty_n,ticker))
+        cursor.execute("UPDATE product SET stock = ? WHERE ticker = ? ",(qty_n,ticker))
         connection.commit()
         cursor.execute("INSERT INTO orderitem VALUES(?,?,?,?);",(user_data['email'],today_date,ticker,qty))
         connection.commit()
-        cursor.execute("SELECT quantity FROM holdings WHERE ticket = ? AND customer_email = ?" ,(ticker,user_data['email']))
+        cursor.execute("SELECT quantity FROM holdings WHERE ticker = ? AND customer_email = ?" ,(ticker,user_data['email']))
         query = cursor.fetchone()
         qty_holding = qty
         if query != None:
             qty_holding += query[0]
-            cursor.execute("UPDATE holdings SET quantity = ? WHERE ticket = ? AND customer_email = ?;",(qty_holding,ticker,user_data['email']))
+            cursor.execute("UPDATE holdings SET quantity = ? WHERE ticker = ? AND customer_email = ?;",(qty_holding,ticker,user_data['email']))
             connection.commit()
         else:
             cursor.execute("INSERT INTO holdings VALUES(?,?,?);",(user_data['email'],ticker,qty_holding))
@@ -301,7 +301,7 @@ def submit():
     cursor.execute("INSERT INTO orders VALUES(?,?,?);", (user_data['email'],today_date,totalcost))
     connection.commit()
 
-    cursor.execute("SELECT ticket,quantity FROM holdings WHERE customer_email = ? ORDER BY ticket",(user_data['email'],))
+    cursor.execute("SELECT ticker,quantity FROM holdings WHERE customer_email = ? ORDER BY ticker",(user_data['email'],))
     query = cursor.fetchall()
     user_holdings = []
     if(len(query) > 0):
@@ -326,7 +326,7 @@ def history(transaction_sort = 'ASC', search = None):
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
-    cursor.execute("SELECT ticket,quantity FROM holdings WHERE customer_email = ? ORDER BY ticket",(user_data['email'],))
+    cursor.execute("SELECT ticker,quantity FROM holdings WHERE customer_email = ? ORDER BY ticker",(user_data['email'],))
     query = cursor.fetchall()
     user_holdings = []
     if(len(query) > 0):
@@ -337,9 +337,9 @@ def history(transaction_sort = 'ASC', search = None):
 
     print(transaction_sort)
     if(transaction_sort == 'ASC'):
-        cursor.execute("SELECT date, ticket_id, quantity FROM orderitem WHERE customer_email = ? ORDER BY date ASC",(user_data['email'],))
+        cursor.execute("SELECT date, ticker_id, quantity FROM orderitem WHERE customer_email = ? ORDER BY date ASC",(user_data['email'],))
     else:
-        cursor.execute("SELECT date, ticket_id, quantity FROM orderitem WHERE customer_email = ? ORDER BY date DESC",(user_data['email'],))
+        cursor.execute("SELECT date, ticker_id, quantity FROM orderitem WHERE customer_email = ? ORDER BY date DESC",(user_data['email'],))
 
     query = cursor.fetchall()
     transactions = []
@@ -372,7 +372,7 @@ def orderhistory():
         connection.row_factory = sqlite3.Row;
         cursor = connection.cursor();
         search_criterias= (user_data['email'],str('%' + request.form["search"].upper() + '%'))
-        cursor.execute("SELECT date, ticket_id, quantity FROM orderitem WHERE customer_email = ? AND ticket_id LIKE ? ORDER BY date ASC",search_criterias)
+        cursor.execute("SELECT date, ticker_id, quantity FROM orderitem WHERE customer_email = ? AND ticker_id LIKE ? ORDER BY date ASC",search_criterias)
         query = cursor.fetchall()
         connection.close()
         return history(search=query)
