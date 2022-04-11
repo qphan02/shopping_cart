@@ -179,8 +179,8 @@
 
             console.log('x  = ' + e.clientX + '\ty  = ' + e.clientY);
             const rect = canvas.getBoundingClientRect()
-            cursorX = Math.round((e.clientX -  rect.left)/gs);
-            cursorY = Math.round((e.clientY -  rect.top)/gs);
+            cursorX = Math.floor((e.clientX -  rect.left)/gs);
+            cursorY = Math.floor((e.clientY -  rect.top)/gs);
             followCursor = true;
         });
 
