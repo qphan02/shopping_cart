@@ -65,7 +65,7 @@
                         </script>
                 {%endif%}
                 {%if user == None%}
-                    <p style="color:red;"> You need to login to make the transaction !</p>
+                    <p style="color:red;"> You need to login to make this transaction !</p>
                     <p> Input quanity: <input type="number" id = "quantity" name = "quantity" min="1" max="{{product["stock"]}}" size = "40" disabled>  shares</p>
                     <button type="submit" class="buy_button" value="BUY" width = "90%" disabled>BUY</button>
                     <button type="submit" class="sell_button" value="SELL" width = "90%" disabled>SELL</button>
