@@ -13,6 +13,7 @@
     <canvas id="gc" width="800" height="800"></canvas>
     <script>
         gs = 20;
+        isize = 10;
         window.onload=function() {
             canv=document.getElementById("gc");
             canv.width = Math.floor(window.innerWidth/gs)*gs
@@ -20,7 +21,8 @@
             ctx = canv.getContext("2d");
             document.addEventListener("keydown",keyPush);
             
-            setInterval(game,1000/20);
+            speed = 1000/(canv.width*canv.height/20000)
+            myInterval = setInterval(game,speed);
         }
         px = py = 10; // position x and y
 
@@ -36,25 +38,30 @@
         xv=yv=1; // x and y vectors
     
         trail =[]; // keeping track of previous positions
-        tail = 10;
+        tail = isize;
     
         cursorX = cursorY = 0;
         followCursor = true;
 
         function game(){
 
-            canv.width = Math.floor(window.innerWidth/gs)*gs
-            canv.height = Math.floor(window.innerHeight/gs)*gs
-            tc_x = Math.floor(window.innerWidth/gs);
-            tc_y = Math.floor(window.innerHeight/gs);
-            if (ax > tc_x || ay > tc_y) {
-                // randomly generate a new apple
-                ax = Math.floor(Math.random()*tc_x);
-                ay = Math.floor(Math.random()*tc_y);
+            if(canv.width != Math.floor(window.innerWidth/gs)*gs || canv.height != Math.floor(window.innerHeight/gs)*gs) {
+                canv.width = Math.floor(window.innerWidth/gs)*gs
+                canv.height = Math.floor(window.innerHeight/gs)*gs
+                tc_x = Math.floor(window.innerWidth/gs);
+                tc_y = Math.floor(window.innerHeight/gs);
+                if (ax > tc_x || ay > tc_y) {
+                    // randomly generate a new apple
+                    ax = Math.floor(Math.random()*tc_x);
+                    ay = Math.floor(Math.random()*tc_y);
 
-                // drawing apples
-                ctx.fillStyle="red";
-                ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+                    // drawing apples
+                    ctx.fillStyle="red";
+                    ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+                }
+                clearInterval(myInterval)
+                speed = 1000/(canv.width*canv.height/20000)
+                myInterval = setInterval(game,speed)
             }
 
             if(cursorX == px && cursorY == py) {
@@ -116,7 +123,7 @@
     
                 // if the snake steps on its tail, its size reduces back to 5
                 if(trail[i].x == px && trail[i].y == py) {
-                    tail = 5;
+                    tail = isize;
                 }
             }
     
