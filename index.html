@@ -10,20 +10,170 @@
 <body>
     <div class="cursor"></div>
 
+    <canvas id="gc" width="800" height="800"></canvas>
     <script>
+        gs = 20;
+        window.onload=function() {
+            canv=document.getElementById("gc");
+            canv.width = Math.floor(window.innerWidth/gs)*gs
+            canv.height = Math.floor(window.innerHeight/gs)*gs
+            ctx = canv.getContext("2d");
+            document.addEventListener("keydown",keyPush);
+            
+            setInterval(game,1000/20);
+        }
+        px = py = 10; // position x and y
+
+        // grid size (gs) and title countable (tc)
+        
+        tc_x = Math.floor(window.innerWidth/gs);
+        tc_y = Math.floor(window.innerHeight/gs);
+
+
+        // postion of apple (x,y)
+        ax = ax = Math.floor(Math.random()*tc_x);
+        ay = Math.floor(Math.random()*tc_y);
+        xv=yv=1; // x and y vectors
+    
+        trail =[]; // keeping track of previous positions
+        tail = 10;
+    
+        cursorX = cursorY = 0;
+        followCursor = true;
+
+        function game(){
+
+            canv.width = Math.floor(window.innerWidth/gs)*gs
+            canv.height = Math.floor(window.innerHeight/gs)*gs
+            tc_x = Math.floor(window.innerWidth/gs);
+            tc_y = Math.floor(window.innerHeight/gs);
+            if (ax > tc_x || ay > tc_y) {
+                // randomly generate a new apple
+                ax = Math.floor(Math.random()*tc_x);
+                ay = Math.floor(Math.random()*tc_y);
+
+                // drawing apples
+                ctx.fillStyle="red";
+                ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+            }
+
+            if(cursorX == px && cursorY == py) {
+                followCursor = false;
+            }
+            if(followCursor == true) {
+                console.log('x  = ' + cursorX + '\ty  = ' + cursorY + '\tpx  = ' + px + '\tpy  = ' + py);
+                if(cursorX < px) {
+                    xv = -1;
+                    console.log('left');
+                } else if (cursorX > px){
+                    xv = 1;
+                    console.log('right');
+                }
+                else {
+                    xv = 0; // dont move left or right
+                }
+                if(cursorY < py) {
+                    yv = -1;
+                    console.log('up');
+                } else if (cursorY > py) {
+                    yv = 1;
+                    console.log('down');
+                } else {
+                    yv = 0;
+                }
+            }
+
+           // updating position of the snake
+            px+=xv;
+            py+=yv;
+    
+            // edge cases
+            if (px<0) {
+                px = tc_x -1;
+            }
+    
+            if (py<0) {
+                py = tc_y -1;
+            }
+    
+            if (px>=tc_x) {
+                px = 0;
+            }
+    
+            if (py>=tc_y) {
+                py = 0;
+            }
+    
+            // drawing the game background
+            // ctx.fillStyle = 'black';
+            ctx.fillStyle = '#1b1b1b';
+            ctx.fillRect(0,0,canv.width,canv.height);
+    
+            // drawing the snake
+            ctx.fillStyle = "lime";
+            for(var i=0; i<trail.length; i++) {
+                ctx.fillRect(trail[i].x*gs, trail[i].y*gs, gs-2, gs-2);
+    
+                // if the snake steps on its tail, its size reduces back to 5
+                if(trail[i].x == px && trail[i].y == py) {
+                    tail = 5;
+                }
+            }
+    
+            trail.push({x:px,y:py});
+            while(trail.length > tail) {
+                trail.shift(); 
+            }
+    
+            // when the snake steps on an apple, its size increased by 1
+            if(ax == px && ay == py) {
+                    tail++;
+    
+                    // randomly generate a new apple
+                    ax = Math.floor(Math.random()*tc_x);
+                    ay = Math.floor(Math.random()*tc_y);
+            }
+    
+            // drawing apples
+            ctx.fillStyle="red";
+            ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+        }
+    
+        function keyPush(evt){
+            switch(evt.keyCode) {
+                case 37: // left
+                    xv=-1; yv=0;
+                    break;
+                case 38: // down
+                    xv=0; yv=-1;
+                    break;
+                case 39: // right
+                    xv=1; yv=0;
+                    break;
+                case 40: // up
+                    xv=0; yv=1;
+                    break;
+            }
+        }
+
+
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', e => {
             cursor.setAttribute("style", "top: " + (e.pageY - 10) + "px; left: " + (e.pageX - 10)+"px;")
         })
 
-        document.addEventListener('click', () => {
+        document.addEventListener('click', e => {
             cursor.classList.add("expand");
 
             setTimeout(()=> {
                 cursor.classList.remove("expand");
             }, 500)
-        })
 
+            console.log('x  = ' + e.clientX + '\ty  = ' + e.clientY);
+            cursorX = Math.round(e.clientX/gs);
+            cursorY = Math.round(e.clientY/gs);
+            followCursor = true;
+        });
     </script>
 </body>
 </html>
