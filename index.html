@@ -169,6 +169,7 @@
             cursor.setAttribute("style", "top: " + (e.pageY - 10) + "px; left: " + (e.pageX - 10)+"px;")
         })
 
+        const canvas = document.querySelector('canvas')
         document.addEventListener('click', e => {
             cursor.classList.add("expand");
 
@@ -177,10 +178,22 @@
             }, 500)
 
             console.log('x  = ' + e.clientX + '\ty  = ' + e.clientY);
-            cursorX = Math.round(e.clientX/gs);
-            cursorY = Math.round(e.clientY/gs);
+            const rect = canvas.getBoundingClientRect()
+            cursorX = Math.round((e.clientX -  rect.left)/gs);
+            cursorY = Math.round((e.clientY -  rect.top)/gs);
             followCursor = true;
         });
+
+        // function getCursorPosition(canvas, event) {
+        //     const rect = canvas.getBoundingClientRect()
+        //     const x = event.clientX - rect.left
+        //     const y = event.clientY - rect.top
+        //     console.log("x: " + x + " y: " + y)
+        // }
+
+        // canvas.addEventListener('mousedown', function(e) {
+        //     getCursorPosition(canvas, e)
+        // })
     </script>
 </body>
 </html>
